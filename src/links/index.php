@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-//ini_set("session.cookie_httponly", "1");
+ini_set("session.cookie_httponly", "1");
 
 require __DIR__."/config.php";
 require __DIR__."/vendor/autoload.php";
 
 use jasig\phpcas\phpCAS;
 
-//session_set_cookie_params(60*60*24*7, "/links/", "cjreed.dev", true, true);
+if(isset($env) && $env == "prod"){
+    session_set_cookie_params(60*60*24*7, $path, $hostname, true, true);
+}
 
 session_start();
 
