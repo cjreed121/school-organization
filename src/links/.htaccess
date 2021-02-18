@@ -1,0 +1,23 @@
+RewriteEngine On
+RewriteBase /links/
+
+<Files "config.php">
+	Order Allow,Deny
+	Deny from all
+</Files>
+
+<Files "cas.crt">
+	Order Allow,Deny
+	Deny from all
+</Files>
+
+<Files "config.php">
+	Order Allow,Deny
+	Deny from all
+</Files>
+
+ErrorDocument 403 /links/404.php
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.+)$ /links/index.php?url=$1 [QSA,L]
