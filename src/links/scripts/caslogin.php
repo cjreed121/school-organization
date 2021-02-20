@@ -1,6 +1,6 @@
 <?php
 
-phpCAS::client(CAS_VERSION_3_0, $cas_host, 443, $cas_context);
+phpCAS::client(CAS_VERSION_3_0, $cas_host, 443, $cas_context, false);
 
 if(isset($env) && $env == "dev"){
     phpCAS::setDebug();

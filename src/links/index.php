@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 ini_set("session.cookie_httponly", "1");
-ini_set("session.cookie_samesite", "strict");
 ini_set("session.gc_maxlifetime", "604800");
 
 require __DIR__."/config.php";
