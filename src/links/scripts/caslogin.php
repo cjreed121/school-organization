@@ -1,15 +1,15 @@
 <?php
 
+phpCAS::client(CAS_VERSION_3_0, $cas_host, 443, $cas_context);
+
 if(isset($env) && $env == "dev"){
     phpCAS::setDebug();
     phpCAS::setVerbose(true);
-    hpCAS::setNoCasServerValidation();
+    phpCAS::setNoCasServerValidation();
 }
 else if(isset($env) && $env == "prod"){
     phpCAS::setCasServerCACert("certificates/cas.crt");
 }
-
-phpCAS::client(CAS_VERSION_3_0, $cas_host, 443, $cas_context);
 
 phpCAS::forceAuthentication();
 
