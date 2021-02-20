@@ -6,7 +6,7 @@ $(document).ready(function () {
             type: 'post',
             url: '../deletelink',
             dataType: 'json',
-            data: {"id": id, "classid": $("#classname").attr("classid")},
+            data: {"id": id, "classid": $("#classname").attr("classurlname")},
             success: function(rdata, status){
                 $(thing).parents("div").eq(1).closest('div').remove();
             }

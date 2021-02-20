@@ -2,20 +2,24 @@
 
 if(sizeof($burl) === 2){
     
-    $query = "SELECT * FROM classes, classusers WHERE classusers.class_id = classes.class_id AND classes.class_id = ? AND classusers.user_id = ?";
+    $query = "SELECT * FROM classes, classusers WHERE classusers.class_id = classes.class_id AND classes.class_url_name = ? AND classusers.user_id = ?";
     $result = $conn->prepare($query);
     $result->execute([$burl[1], $_SESSION['uid']]);
     if($result->rowCount() === 1){
         
         require "views/header.php";
         $row = $result->fetch();
-        echo "<h1 id=\"classname\" classid=\"".$row['class_id']."\">".$row['class_name']."</h1>";
+        echo "<h1 id=\"classname\" classurlname=\"".$row['class_url_name']."\">".$row['class_name']."</h1>";
 
         echo "<h3>My Links</h3>";
         if($_POST['linkname'] && $_POST['linkurl']){
+            $classid = $row['class_id'];
+            
             $query = "INSERT INTO classlinks (`class_id`, `link`, `linkname`) VALUES (?, ?, ?)";
             $result = $conn->prepare($query);
-            $result->execute([$burl[1], $_POST['linkurl'], $_POST['linkname']]);
+            $result->execute([$classid, $_POST['linkurl'], $_POST['linkname']]);
+            
+            
         }
         $query = "SELECT * FROM classlinks WHERE class_id=?";
         $result = $conn->prepare($query);
@@ -44,12 +48,12 @@ if(sizeof($burl) === 2){
         }
     }
     else{
-        header("Location: classes");
+        header("Location: ../classes");
         die();
     }
 }
 else{
-    header("Location: classes");
+    header("Location: ../classes");
     die();
 }
 

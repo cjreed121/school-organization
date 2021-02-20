@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $(".deletebutton").click(function () {
         if(confirm("Delete?")){
-            var id = $(this).attr('classid');
+            var id = $(this).attr('classurlname');
             var data = 'id=' + id;
             var thing = this;
             $.ajax({

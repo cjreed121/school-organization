@@ -14,12 +14,22 @@ require "views/header.php";
 <?php
 
 if($_POST['classname']){
-    $query = "INSERT INTO classes (`class_name`) VALUES (?)";
+    $query = "SELECT * FROM classes WHERE class_name = ?";
     $result = $conn->prepare($query);
     $result->execute([$_POST['classname']]);
-    $query = "INSERT INTO classusers (`class_id`, `user_id`) VALUES (?, ?)";
-    $result = $conn->prepare($query);
-    $result->execute([$conn->lastInsertId(), $_SESSION['uid']]);
+    if($result->rowCount() > 0){
+        echo "Can't have 2 classes with same name.";
+    }
+    else{
+        $query = "INSERT INTO classes (`class_name`, `class_url_name`) VALUES (?, ?)";
+        $result = $conn->prepare($query);
+        $urlname = htmlspecialchars($_POST['classname']);
+        $urlname = str_replace(" ", "-", $urlname);
+        $result->execute([$_POST['classname'], $urlname]);
+        $query = "INSERT INTO classusers (`class_id`, `user_id`) VALUES (?, ?)";
+        $result = $conn->prepare($query);
+        $result->execute([$conn->lastInsertId(), $_SESSION['uid']]);
+    }
 }
 
 $query = "SELECT * FROM classes, classusers WHERE classes.class_id = classusers.class_id AND classusers.user_id=? ORDER BY classes.class_name";
@@ -28,7 +38,7 @@ $result->execute([$_SESSION['uid']]);
 
 
 while($row = $result->fetch()){
-    echo "<div class=\"card mt-3\"><div class=\"card-body d-flex justify-content-between\"><a class=\"mt-1\" href=\"class/".$row['class_id']."\">".$row['class_name']."</a><button type=\"submit\" class=\"btn btn-danger deletebutton\" classid=\"".$row['class_id']."\">Delete</button></div></div>";
+    echo "<div class=\"card mt-3\"><div class=\"card-body d-flex justify-content-between\"><a class=\"mt-1\" href=\"class/".$row['class_url_name']."\">".$row['class_name']."</a><button type=\"submit\" class=\"btn btn-danger deletebutton\" classurlname=\"".$row['class_url_name']."\">Delete</button></div></div>";
 }
 
 
